@@ -1,10 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()  # must run before any service reads os.getenv()
 
-import os
-print("DEBUG SPOONACULAR KEY:", os.getenv("SPOONACULAR_API_KEY"))
-print("DEBUG GEMINI KEY:", os.getenv("GEMINI_API_KEY"))
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
