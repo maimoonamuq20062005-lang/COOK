@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Body
+from fastapi import APIRouter, Query, Body, HTTPException
 
 from services import spoonacular_service, gemini_service
 from utils.ranking import merge_and_rank
@@ -17,7 +17,11 @@ def search_recipes(ingredients: str = Query(..., description="Comma-separated in
     if not ingredient_list:
         return {"error": "Please provide at least one ingredient."}
 
-    spoonacular_results = spoonacular_service.search_by_ingredients(ingredient_list)
+    try:
+        spoonacular_results = spoonacular_service.search_by_ingredients(ingredient_list)
+    except spoonacular_service.SpoonacularQuotaError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+
     ranked_recipes = merge_and_rank(spoonacular_results, [])
 
     return {
@@ -74,7 +78,10 @@ def get_recipe_detail(recipe_id: int):
     Example call:
     /api/recipes/12345
     """
-    details = spoonacular_service.get_recipe_details(recipe_id)
+    try:
+        details = spoonacular_service.get_recipe_details(recipe_id)
+    except spoonacular_service.SpoonacularQuotaError as e:
+        raise HTTPException(status_code=503, detail=str(e))
 
     # Pull out just the nutrients we care about into a simple format
     nutrients = details.get("nutrition", {}).get("nutrients", [])

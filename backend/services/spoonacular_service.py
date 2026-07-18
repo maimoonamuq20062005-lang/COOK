@@ -15,6 +15,13 @@ def _get_with_retry(url, params, max_attempts=3):
     for attempt in range(1, max_attempts + 1):
         try:
             response = requests.get(url, params=params, timeout=10)
+            if response.status_code == 402:
+                # Spoonacular's free daily quota (150 requests/day) has been used up.
+                # This isn't transient - retrying won't help, fail clearly instead.
+                raise SpoonacularQuotaError(
+                    "Daily recipe search limit reached. Please try again tomorrow, "
+                    "or check your Spoonacular dashboard for quota reset time."
+                )
             response.raise_for_status()
             return response
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
@@ -23,6 +30,11 @@ def _get_with_retry(url, params, max_attempts=3):
                 time.sleep(1.5 * attempt)  # wait a bit longer each retry
                 continue
     raise last_error
+
+
+class SpoonacularQuotaError(Exception):
+    """Raised when Spoonacular's free-tier daily quota is exhausted (402)."""
+    pass
 
 
 def search_by_ingredients(ingredients: list[str], number: int = 10):
