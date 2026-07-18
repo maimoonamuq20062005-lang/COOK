@@ -1,0 +1,24 @@
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model PakistaniRecipe {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  ingredients  String[]
+  instructions String
+  image        String?
+  category     String?
+  calories     Float?
+  protein      Float?
+  carbs        Float?
+  fat          Float?
+  createdAt    DateTime @default(now())
+}

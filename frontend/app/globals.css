@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* ===================================================================
+   SmartMeal — Ultra-Premium Culinary Design System
+   Tailwind CSS v4: tokens in @theme, animations in @keyframes
+   =================================================================== */
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-background-warm: #fff8f0;
+  --color-background-cream: #fef6ee;
+  --color-foreground: #1a1a1a;
+  --color-muted: #6b7280;
+  --color-muted-light: #9ca3af;
+  --color-border: #f3f4f6;
+  --color-border-warm: #fde8d0;
+  --color-card: #ffffff;
+
+  --color-primary: #f97316;
+  --color-primary-hover: #ea580c;
+  --color-primary-light: #fff7ed;
+  --color-primary-dark: #c2410c;
+
+  --font-heading: var(--font-poppins), "system-ui", sans-serif;
+  --font-body: var(--font-inter), "system-ui", sans-serif;
+
+  --animate-fade-in-up: fade-in-up 0.6s ease-out both;
+  --animate-shimmer: shimmer 2s ease-in-out infinite;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* ---- Keyframes ---- */
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes toast-slide-in {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toast-slide-out {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(15px, -10px) scale(1.03); }
+  66% { transform: translate(-10px, 8px) scale(0.97); }
+}
+
+/* ---- Utility Classes ---- */
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f3f4f6 0%, #fafafa 40%, #f3f4f6 80%);
+  background-size: 1200px 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.card-animate {
+  animation: fade-in-up 0.6s ease-out both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.search-glow:focus-within {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+.blob-animation {
+  animation: blob-drift 20s ease-in-out infinite;
+}
+
+/* Recipe instructions from Spoonacular HTML */
+.recipe-instructions {
+  line-height: 1.9;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+.recipe-instructions p { margin-bottom: 1rem; }
+.recipe-instructions ol, .recipe-instructions ul {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+.recipe-instructions ol { list-style-type: decimal; }
+.recipe-instructions ul { list-style-type: disc; }
+.recipe-instructions li { margin-bottom: 0.5rem; }
+.recipe-instructions a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+.recipe-instructions strong, .recipe-instructions b { font-weight: 600; }
